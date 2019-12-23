@@ -100,7 +100,7 @@
     image: "cloudb0x/trackarr:latest"
     pull: yes
     volumes:
-      - "/opt/trackarr:/config"
+      - "/opt/trackarr:/config/trackarr"
     published_ports:
       - "127.0.0.1:7337:7337"
     env:
