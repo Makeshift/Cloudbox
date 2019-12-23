@@ -82,7 +82,7 @@
 
   - name: Settings | Import default 'config.yaml'
     template:
-      src: config.yaml.j2
+      src: config.yaml.js2
       dest: /opt/trackarr/config.yaml
       owner: "{{ user.name }}"
       group: "{{ user.name }}"
