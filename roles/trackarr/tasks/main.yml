@@ -12,111 +12,21 @@
   include_role:
     name: dns
   vars:
-    record: trackarr
+    record: "{{ item }}"
+  loop:
+    - "{{ lookup('vars', role_name + '_subdomain') }}"
 
-- name: Stop and remove any existing container
+- name: Remove existing Docker container
   docker_container:
-    name: trackarr
+    name: "{{ lookup('vars', role_name + '_docker_container') }}"
     state: absent
 
-- name: Create trackarr directories
-  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
-  with_items:
-    - /opt/trackarr
+- name: Create directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items: "{{ lookup('vars', role_name + '_folders') }}"
 
-- name: Check if trackarr config exists
-  stat:
-    path: "/opt/trackarr/config.yaml"
-  register: trackarr_config
+- name: Pre-Install Tasks
+  include_tasks: "subtasks/pre-install.yml"
 
-- name: "Check if sonarr exists"
-  stat:
-    path: "/opt/sonarr/app/config.xml"
-  register: sonarr_config
-  when: not trackarr_config.stat.exists
-
-- name: "When sonarr exists, add api key to trackarr config"
-  block:
-
-  - name: Pull sonarr api key
-    xml:
-      path: "/opt/sonarr/app/config.xml"
-      xpath: /Config/ApiKey
-      content: text
-    register: xmlresp
-
-  - name: Set sonarr api Key
-    set_fact:
-      sonarr_api_key: "{{ xmlresp.matches[0].ApiKey }}"
-
-  when: (not trackarr_config.stat.exists) and (sonarr_config.stat.exists)
-
-- name: "Check if radarr exists"
-  stat:
-    path: "/opt/radarr/app/config.xml"
-  register: radarr_config
-  when: not trackarr_config.stat.exists
-
-- name: "When radarr exists, add api key to trackarr config"
-  block:
-
-  - name: Pull radarr api key
-    xml:
-      path: "/opt/radarr/app/config.xml"
-      xpath: /Config/ApiKey
-      content: text
-    register: xmlresp
-
-  - name: Set radarr api Key
-    set_fact:
-      radarr_api_key: "{{ xmlresp.matches[0].ApiKey }}"
-
-  when: (not trackarr_config.stat.exists) and (radarr_config.stat.exists)
-
-- name: Settings | New 'config.yaml' tasks
-  block:
-
-  - name: Settings | Generate 22 character 'apikey'
-    set_fact:
-      trackarr_server_apikey: "{{ lookup('password', '/dev/null chars=ascii_letters,digits length=22') }}"
-
-  - name: Settings | Import default 'config.yaml'
-    template:
-      src: config.yaml.j2
-      dest: /opt/trackarr/config.yaml
-      owner: "{{ user.name }}"
-      group: "{{ user.name }}"
-      mode: 0775
-      force: no
-
-  when: not trackarr_config.stat.exists
-
-- name: Set directory permissions
-  file: "path=/opt/trackarr state=directory owner={{ user.name }} group={{ user.name }} recurse=yes"
-
-- name: Create and start container
-  docker_container:
-    name: trackarr
-    image: "cloudb0x/trackarr:latest"
-    pull: yes
-    volumes:
-      - "/opt/trackarr:/config/trackarr"
-    published_ports:
-      - "127.0.0.1:7337:7337"
-    env:
-      PUID: "{{ uid }}"
-      PGID: "{{ gid }}"
-      VIRTUAL_HOST: "trackarr.{{ user.domain }}"
-      VIRTUAL_PORT: 7337
-      LETSENCRYPT_HOST: "trackarr.{{ user.domain }}"
-      LETSENCRYPT_EMAIL: "{{ user.email }}"
-      TZ: "{{ tz }}"
-    labels:
-      "com.github.cloudbox.cloudbox_managed": "true"
-    networks:
-      - name: cloudbox
-        aliases:
-          - trackarr
-    purge_networks: yes
-    restart_policy: unless-stopped
-    state: stopped
+- name: Create Docker container
+  include_tasks: "{{ resources_tasks_path }}/docker/create_docker_container.yml"

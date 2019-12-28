@@ -2,9 +2,9 @@
 database:
   maxagehours: 72
 pvr:
-- name: sonarr
-  url: "https://sonarr.{{ user.domain }}"
-  apikey: "{{ sonarr_api_key | default('',true) }}"
+- name: "{{ sonarr_name }}"
+  url: "{{ sonarr_url }}"
+  apikey: "{{ sonarr_api_key }}"
   enabled: true
   filters:
     accepts:
@@ -16,9 +16,9 @@ pvr:
       - any (Files, {% raw -%}{#{%- endraw %} matches "(?i)\\.(bdmv|mpls|miniso|cci|cer|clpi|m2ts|VOB|IFO|BUP|iso|rar|r01)$"})
     delays:
       - 'not (TorrentName contains "1080") ? 15 : 0'
-- name: radarr
-  url: "https://radarr.{{ user.domain }}"
-  apikey: "{{ radarr_api_key | default('',true) }}"
+- name: "{{ radarr_name }}"
+  url: "{{ radarr_url }}"
+  apikey: "{{ radarr_api_key }}"
   enabled: true
   filters:
     accepts:
@@ -33,12 +33,12 @@ pvr:
       - TorrentName contains "x265" && not (TorrentName contains "2160")
       - any (Files, {% raw -%}{#{%- endraw %} matches "(?i)\\.(bdmv|mpls|miniso|cci|cer|clpi|m2ts|VOB|IFO|BUP|iso|rar|r01)$"})
 server:
-  apikey: "{{ trackarr_server_apikey | default('') }}"
+  apikey: "{{ trackarr_server_apikey }}"
   host: 0.0.0.0
-  pass: password
+  pass: "{{ user.pass }}"
   port: 7337
-  publicurl: "https://trackarr.{{ user.domain }}"
-  user: admin
+  publicurl: "{{ trackarr_url }}"
+  user: {{ user.name }}
 trackers:
   iptorrents:
     bencode:
