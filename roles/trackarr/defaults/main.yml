@@ -99,7 +99,7 @@ trackarr_docker_envs: "{{ (trackarr_docker_envs_standard |
 ################################
 
 trackarr_docker_volumes:
-  - "{{ trackarr_path }}:/config/trackarr"
+  - "{{ trackarr_path }}:/config"
   - "/mnt:/mnt"
 
 ################################
