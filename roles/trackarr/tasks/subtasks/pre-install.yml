@@ -10,7 +10,7 @@
 ---
 - name: Pre-Install | Check if Trackarr config exists
   stat:
-    path: "{{ trackarr_config_file_stat_file_path }}"
+    path: "{{ trackarr_config_file_path }}"
   register: trackarr_config_file_stat
 
 - name: Pre-Install | New Trackarr config tasks
@@ -26,7 +26,7 @@
   - name: Pre-Install | Import default Trackarr config
     template:
       src: 'config.yaml.j2'
-      dest: "{{ trackarr_config_file_stat_file_path }}"
+      dest: "{{ trackarr_config_file_path }}"
       owner: "{{ user.name }}"
       group: "{{ user.name }}"
       mode: 0775
