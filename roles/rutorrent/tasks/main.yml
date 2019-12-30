@@ -56,7 +56,7 @@
     image: horjulf/rutorrent-autodl
     pull: yes
     published_ports:
-      - "127.0.0.1:3111:80"
+      - "3111:80"
       - "51413:51413"
       - "6881:6881/udp"
     env:
@@ -69,6 +69,8 @@
     volumes: "{{ default_volumes + torrents_downloads_path|default([]) }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
+      "proxy.hosts": "rutorrent.makeshift.ninja,rutorrent.local.makeshift.ninja,rutorrent.public.makeshift.ninja"
+      "proxy.port": "3111"
     networks:
       - name: cloudbox
         aliases:

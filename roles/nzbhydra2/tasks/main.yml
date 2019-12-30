@@ -57,7 +57,7 @@
     image: hotio/nzbhydra2
     pull: yes
     published_ports:
-      - "127.0.0.1:5076:5076"
+      - "5076:5076"
     env:
       VERSION: "{{ suitarr.version }}"
       BACKUP: "no"
@@ -72,6 +72,8 @@
     volumes: "{{ default_volumes + migration_path|default([]) }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
+      "proxy.hosts": "nzbhydra.makeshift.ninja,nzbhydra.local.makeshift.ninja,nzbhydra.public.makeshift.ninja"
+      "proxy.port": "5076"
     networks:
       - name: cloudbox
         aliases:

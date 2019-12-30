@@ -35,7 +35,7 @@
     image: hotio/jackett
     pull: yes
     published_ports:
-      - "127.0.0.1:9117:9117"
+      - "9117:9117"
     env:
       VERSION: "{{ suitarr.version }}"
       BACKUP: "no"
@@ -51,6 +51,8 @@
       - "/opt/jackett:/config"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
+      "proxy.hosts": "jackett.makeshift.ninja,jackett.local.makeshift.ninja,jackett.public.makeshift.ninja"
+      "proxy.port": "9117"
     networks:
       - name: cloudbox
         aliases:

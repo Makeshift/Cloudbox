@@ -43,7 +43,7 @@
     image: hotio/lidarr
     pull: yes
     published_ports:
-      - "127.0.0.1:8686:8686"
+      - "8686:8686"
     env:
       VERSION: "{{ suitarr.version }}"
       BACKUP: "no"
@@ -58,6 +58,8 @@
     volumes: "{{ default_volumes + nzbs_downloads_path|default([]) + torrents_downloads_path|default([]) }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
+      "proxy.hosts": "lidarr.makeshift.ninja,lidarr.local.makeshift.ninja,lidarr.public.makeshift.ninja"
+      "proxy.port": "8686"
     networks:
       - name: cloudbox
         aliases:
