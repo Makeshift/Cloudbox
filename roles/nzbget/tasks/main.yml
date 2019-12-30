@@ -67,9 +67,9 @@
       TZ: "{{ tz }}"
     volumes: "{{ default_volumes + nzbs_downloads_path|default([]) }}"
     labels:
-      - "com.github.cloudbox.cloudbox_managed": "true"
-      - "proxy.hosts": "nzbget.makeshift.ninja,nzbget.local.makeshift.ninja,nzbget.public.makeshift.ninja"
-      - "proxy.port": "6789"
+      "com.github.cloudbox.cloudbox_managed": "true"
+      "proxy.hosts": "nzbget.makeshift.ninja,nzbget.local.makeshift.ninja,nzbget.public.makeshift.ninja"
+      "proxy.port": "6789"
 
     networks:
       - name: cloudbox
