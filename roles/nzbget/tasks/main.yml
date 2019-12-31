@@ -70,7 +70,7 @@
       "com.github.cloudbox.cloudbox_managed": "true"
       "proxy.hosts": "nzbget.makeshift.ninja,nzbget.local.makeshift.ninja,nzbget.public.makeshift.ninja"
       "proxy.port": "6789"
-    network_mode: host
+    network_mode: "host"
     # networks:
     #   - name: cloudbox
     #     aliases:
