@@ -49,8 +49,8 @@
     name: sabnzbd
     image: hotio/sabnzbd
     pull: yes
-    published_ports:
-      - "127.0.0.1:8081:8080"
+    # published_ports:
+    #   - "8081:8080"
     env:
       VERSION: "{{ suitarr.version }}"
       BACKUP: "no"
@@ -65,11 +65,14 @@
     volumes: "{{ default_volumes + nzbs_downloads_path|default([]) }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
-    networks:
-      - name: cloudbox
-        aliases:
-          - sabnzbd
-    purge_networks: yes
+      "proxy.hosts": "sabnzbd.makeshift.ninja,sabnzbd.local.makeshift.ninja,sabnzbd.public.makeshift.ninja"
+      "proxy.port": "8080"
+    network_mode: "host"
+    # networks:
+    #   - name: cloudbox
+    #     aliases:
+    #       - sabnzbd
+    #purge_networks: yes
     restart_policy: unless-stopped
     state: started
 

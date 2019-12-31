@@ -63,6 +63,8 @@
     etc_hosts: "{{ plex_docker_hosts }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
+      "proxy.hosts": "plex.makeshift.ninja,plex.local.makeshift.ninja,plex.public.makeshift.ninja"
+      "proxy.port": "32400"
     networks:
       - name: cloudbox
         aliases:
