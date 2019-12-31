@@ -73,8 +73,6 @@
       "proxy.port": "3111"
     networks:
       - name: host
-        aliases:
-          - rutorrent
     purge_networks: yes
     restart_policy: unless-stopped
     stop_timeout: 900

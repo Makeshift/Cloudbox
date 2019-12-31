@@ -72,8 +72,6 @@
       "proxy.port": "6789"
     networks:
       - name: host
-        aliases:
-          - nzbget
     purge_networks: yes
     restart_policy: unless-stopped
     state: started
