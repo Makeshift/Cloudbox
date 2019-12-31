@@ -70,9 +70,7 @@
       "com.github.cloudbox.cloudbox_managed": "true"
       "proxy.hosts": "nzbget.makeshift.ninja,nzbget.local.makeshift.ninja,nzbget.public.makeshift.ninja"
       "proxy.port": "6789"
-    networks:
-      - name: host
-    purge_networks: yes
+    network_mode: "host"
     restart_policy: unless-stopped
     state: started
 

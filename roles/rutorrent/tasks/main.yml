@@ -71,9 +71,7 @@
       "com.github.cloudbox.cloudbox_managed": "true"
       "proxy.hosts": "rutorrent.makeshift.ninja,rutorrent.local.makeshift.ninja,rutorrent.public.makeshift.ninja"
       "proxy.port": "3111"
-    networks:
-      - name: host
-    purge_networks: yes
+    network_mode: "host"
     restart_policy: unless-stopped
     stop_timeout: 900
     state: started
